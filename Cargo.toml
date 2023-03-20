@@ -31,7 +31,7 @@ tonic = { version = "0.8.0", optional = true }
 url = "2.3.1"
 uuid = { version = "1.1.2", features = ["serde", "v4"], optional = true }
 zeroize = "1.5.7"
-vtpm-snp = { git = "https://github.com/kinvolk/azure-cvm-tooling.git", rev = "da303e6", optional = true }
+vtpm-snp = { git = "https://github.com/kinvolk/azure-cvm-tooling.git", rev = "08c6ab4", optional = true }
 
 [dev-dependencies]
 tokio = { version = "1.20.1", features = ["macros", "rt-multi-thread"] }
