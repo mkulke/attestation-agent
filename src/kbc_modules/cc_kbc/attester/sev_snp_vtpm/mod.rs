@@ -6,7 +6,6 @@
 use super::Attester;
 use anyhow::*;
 use serde::{Deserialize, Serialize};
-use vtpm_snp::hcl::HclReportWithRuntimeData;
 use vtpm_snp::vtpm;
 
 pub fn detect_platform() -> bool {
@@ -19,16 +18,17 @@ pub struct VtpmAttester;
 #[derive(Serialize, Deserialize)]
 struct VtpmSnpEvidence {
     quote: vtpm::Quote,
-    hcl_report: HclReportWithRuntimeData,
+    report: String,
 }
 
 impl Attester for VtpmAttester {
     fn get_evidence(&self, report_data: String) -> Result<String> {
-        let hcl_report = vtpm::get_report()?;
+        let report = vtpm::get_report()?;
         let report_data_bin = base64::decode(&report_data)?;
         let quote = vtpm::get_quote(&report_data_bin)?;
 
-        let evidence = VtpmSnpEvidence { quote, hcl_report };
+        let report = hex::encode(report);
+        let evidence = VtpmSnpEvidence { quote, report };
 
         Ok(serde_json::to_string(&evidence)?)
     }
