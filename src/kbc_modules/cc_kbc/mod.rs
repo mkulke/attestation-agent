@@ -146,18 +146,21 @@ impl Kbc {
 
         let challenge = self
             .http_client()
-            .post(format!("{kbs_uri}/{KBS_URL_PREFIX}/auth"))
+            // .post(format!("{kbs_uri}/{KBS_URL_PREFIX}/auth"))
+            .post(format!("http://{kbs_uri}/{KBS_URL_PREFIX}/auth"))
             .header("Content-Type", "application/json")
             .json(&Request::new(self.tee().to_string()))
             .send()
             .await?
             .json::<Challenge>()
             .await?;
+
         self.nonce = challenge.nonce.clone();
 
         let attest_response = self
             .http_client()
-            .post(format!("{kbs_uri}/{KBS_URL_PREFIX}/attest"))
+            // .post(format!("{kbs_uri}/{KBS_URL_PREFIX}/auth"))
+            .post(format!("http://{kbs_uri}/{KBS_URL_PREFIX}/attest"))
             .header("Content-Type", "application/json")
             .json(&self.generate_evidence()?)
             .send()
