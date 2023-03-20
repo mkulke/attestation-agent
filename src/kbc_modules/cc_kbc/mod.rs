@@ -151,13 +151,19 @@ impl Kbc {
 
         let challenge = self
             .http_client()
+<<<<<<< HEAD
             .post(format!("{kbs_uri}{KBS_URL_PREFIX}/auth"))
+=======
+            // .post(format!("{kbs_uri}/{KBS_URL_PREFIX}/auth"))
+            .post(format!("http://{kbs_uri}/{KBS_URL_PREFIX}/auth"))
+>>>>>>> Tweak kbs url scheme (temporary fix, until the problem is clear)
             .header("Content-Type", "application/json")
             .json(&Request::new(self.tee().to_string()))
             .send()
             .await?
             .json::<Challenge>()
             .await?;
+
         self.nonce = challenge.nonce.clone();
 
         let attest_response = self
