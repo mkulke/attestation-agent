@@ -18,7 +18,7 @@ pub struct VtpmAttester;
 #[derive(Serialize, Deserialize)]
 struct VtpmSnpEvidence {
     quote: vtpm::Quote,
-    report: String,
+    report: Vec<u8>,
 }
 
 impl Attester for VtpmAttester {
@@ -27,7 +27,6 @@ impl Attester for VtpmAttester {
         let report_data_bin = base64::decode(&report_data)?;
         let quote = vtpm::get_quote(&report_data_bin)?;
 
-        let report = hex::encode(report);
         let evidence = VtpmSnpEvidence { quote, report };
 
         Ok(serde_json::to_string(&evidence)?)
